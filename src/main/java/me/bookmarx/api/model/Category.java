@@ -1,8 +1,13 @@
 package me.bookmarx.api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Category {
@@ -21,10 +26,12 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "dashboard_id")
+    @JsonBackReference
     private Dashboard dashboard;
 
     @OneToMany(mappedBy = "category")
-    private List<Bookmark> bookmarks;
+    @JsonManagedReference
+    private Set<Bookmark> bookmarks = new HashSet<>();
 
     public Category(String name, String color, Boolean collapsed, Integer position) {
         this.name = name;
@@ -85,11 +92,11 @@ public class Category {
         this.dashboard = dashboard;
     }
 
-    public List<Bookmark> getBookmarks() {
+    public Set<Bookmark> getBookmarks() {
         return bookmarks;
     }
 
-    public void setBookmarks(List<Bookmark> bookmarks) {
+    public void setBookmarks(Set<Bookmark> bookmarks) {
         this.bookmarks = bookmarks;
     }
 

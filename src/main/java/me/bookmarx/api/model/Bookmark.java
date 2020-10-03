@@ -1,5 +1,7 @@
 package me.bookmarx.api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -20,6 +22,7 @@ public class Bookmark {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 
     public Bookmark(){

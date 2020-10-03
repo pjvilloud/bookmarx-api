@@ -1,8 +1,12 @@
 package me.bookmarx.api.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Dashboard {
@@ -13,7 +17,8 @@ public class Dashboard {
     private String name;
 
     @OneToMany(mappedBy = "dashboard")
-    private List<Category> categories = new ArrayList<>();
+    @JsonManagedReference
+    private Set<Category> categories = new HashSet<>();
 
     public Dashboard() {
     }
@@ -38,11 +43,11 @@ public class Dashboard {
         this.name = name;
     }
 
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
 }

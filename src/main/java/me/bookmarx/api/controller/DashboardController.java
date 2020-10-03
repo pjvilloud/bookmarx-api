@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/dashboards")
@@ -19,8 +17,13 @@ public class DashboardController {
     private DashboardRepository dashboardRepository;
 
     @GetMapping("/{id}")
-    public Dashboard getDashboardByName(@PathVariable Long id){
-        Optional<Dashboard> dashboard = dashboardRepository.findById(id);
+    public Dashboard getDashboardByName(@PathVariable Long id, @RequestParam Boolean withCategories){
+        Optional<Dashboard> dashboard;
+        if(withCategories) {
+            dashboard = dashboardRepository.findByIdWithCategories(id);
+        } else {
+            dashboard = dashboardRepository.findById(id);
+        }
         if(dashboard.isEmpty()){
             throw new EntityNotFoundException("Impossible de trouver le dashboard d'identifiant " + id);
         }
@@ -32,10 +35,15 @@ public class DashboardController {
         return dashboardRepository.findAll();
     }
 
+    @GetMapping(value = "", params = "name")
+    public Set<Dashboard> getAllDashboardsWithNameLike(@RequestParam String name){
+        return dashboardRepository.findByNameContaining(name);
+    }
+
     @PostMapping("")
     public Dashboard createDashboard(@RequestBody Dashboard dashboard){
-        //To be safe, we clear any bookmarks tht might have been sent along
-        dashboard.setCategories(new ArrayList<>());
+        //To be safe, we clear any categories that might have been sent along
+        dashboard.setCategories(new HashSet<>());
         return dashboardRepository.save(dashboard);
     }
 
