@@ -29,7 +29,7 @@ public class Category {
     @JsonBackReference
     private Dashboard dashboard;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private Set<Bookmark> bookmarks = new HashSet<>();
 

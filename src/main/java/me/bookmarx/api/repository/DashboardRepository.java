@@ -13,7 +13,7 @@ import java.util.Set;
 public interface DashboardRepository extends JpaRepository<Dashboard, Long> {
     public Set<Dashboard> findByNameContaining(String name);
 
-    //Why it fetches the categories' bookmarks ?    
+    //Why it fetches the categories' bookmarks ?
     @EntityGraph(attributePaths = {"categories"})
     @Query("from Dashboard where id = ?1")
     public Optional<Dashboard> findByIdWithCategories(Long id);

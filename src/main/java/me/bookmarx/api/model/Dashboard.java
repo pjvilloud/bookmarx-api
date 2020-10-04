@@ -16,7 +16,7 @@ public class Dashboard {
 
     private String name;
 
-    @OneToMany(mappedBy = "dashboard")
+    @OneToMany(mappedBy = "dashboard", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private Set<Category> categories = new HashSet<>();
 

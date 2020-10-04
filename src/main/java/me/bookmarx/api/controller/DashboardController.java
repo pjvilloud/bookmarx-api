@@ -52,4 +52,12 @@ public class DashboardController {
     public void deleteDashboard(@PathVariable Long id){
         dashboardRepository.deleteById(id);
     }
+
+    @PatchMapping("/{dashboardId}")
+    public Dashboard editDashboard(@PathVariable Long dashboardId, @RequestBody Dashboard dashboard){
+        if(!dashboardId.equals(dashboard.getId())){
+            throw new IllegalArgumentException("L'identifiant du dashboard ne correspond pas à celui de l'URL !");
+        }
+        return dashboardRepository.save(dashboard);
+    }
 }
